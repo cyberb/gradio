@@ -337,9 +337,14 @@ class Queue:
             "url": str(websocket.url),
             "headers": dict(websocket.headers),
             "query_params": dict(websocket.query_params),
-            "path_params": dict(websocket.path_params),
-            "client": {"host": websocket.client.host, "port": websocket.client.port},  # type: ignore
+            "path_params": dict(websocket.path_params)
         }
+        if websocket.client:
+            params["client"] = {
+                "host": websocket.client.host,  # type: ignore
+                "port": websocket.client.port,  # type: ignore
+            }
+
         try:
             params[
                 "session"

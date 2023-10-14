@@ -36,6 +36,7 @@ from gradio import (
     themes,
     utils,
     wasm_utils,
+    requests_unixsocket,
 )
 from gradio.context import Context
 from gradio.deprecation import check_deprecated_parameters, warn_deprecation
@@ -1940,6 +1941,8 @@ Received outputs:
             if not wasm_utils.IS_WASM:
                 # Cannot run async functions in background other than app's scope.
                 # Workaround by triggering the app endpoint
+                if self.local_url.startswith(requests_unixsocket.DEFAULT_SCHEME):
+                    requests_unixsocket.monkeypatch()
                 requests.get(f"{self.local_url}startup-events", verify=ssl_verify)
             else:
                 pass
